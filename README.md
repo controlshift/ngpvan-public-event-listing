@@ -1,15 +1,26 @@
-# Npgvan::Public::Event::Listing
+# NGPVAN Public Event Listing
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/npgvan/public/event/listing`. To experiment with that code, run `bin/console` for an interactive prompt.
+This gem wraps two different ways that EveryAction / VAN allows mapping of Events that are available via the API to the 
+public URLs for those events where members of the public can signup. 
 
-TODO: Delete this and the text above, and describe your gem
+There is not an officially documented API for either mechanism, and which one to use depends on your EveryAction or VAN site. 
+
+If your instance of EveryAction is setup to use the public event listing that NGPVAN support staff might variously describe 
+as the "Drupal site" or "Public Site" that exists at `yourcustomername.ngpvanhost.com` then use the `public-site` option provided by this gem. 
+
+This option wraps an unofficial JSON feed that your NGPVAN support staff might be able to provide you credentials for. 
+
+If your instance of EveryAction is setup to use "Online Action Forms" and your event signup forms live at URLs that looks like 
+`https://secure.ngpvan.com/p/xyzabc` then use the `event-list` option of this gem. This screen scrapes the HTML of an EveryAction Event List page
+to map NGPVAN event IDs to form URLs.
+
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'npgvan-public-event-listing'
+gem 'ngpvan-public-event-listing'
 ```
 
 And then execute:
@@ -18,11 +29,29 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install npgvan-public-event-listing
+    $ gem install ngpvan-public-event-listing
 
 ## Usage
 
-TODO: Write usage instructions here
+Both modes should return the same mapping that includes NGPVAN Event ID, and the public URL where that event lives. They
+are just different ways of retrieving the same info depending on which mechanism your instance is using to publish public event pages. 
+
+### public-site
+
+```ruby
+client = NgpvanPublicEventListing.new(mode: 'public-site', hostname: 'yourcustomername.ngpvanhost.com', username: 'api', password: 'xxx' )
+client.events
+
+```
+
+### event-list
+
+```ruby
+# event_list is a public event_list url where your public events can be listed, we'll scrape this URL
+client = NgpvanPublicEventListing.new(mode: 'event-list', event_list: 'https://secure.ngpvan.com/p/xxx')
+client.events
+
+```
 
 ## Development
 
@@ -32,7 +61,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/npgvan-public-event-listing. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/controlshift/ngpvan-public-event-listing. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -40,4 +69,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Npgvan::Public::Event::Listing project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/npgvan-public-event-listing/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in this codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/controlshift/ngpvan-public-event-listing/blob/master/CODE_OF_CONDUCT.md).

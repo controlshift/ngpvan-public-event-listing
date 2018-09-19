@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "npgvan_public_event_listing"
+require "ngpvan_public_event_listing"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
